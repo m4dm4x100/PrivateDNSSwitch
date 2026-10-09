@@ -1,5 +1,6 @@
 package com.m4dm4x100.privatednsswitch
 
+import android.content.pm.PackageManager
 import android.provider.Settings
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
@@ -13,8 +14,8 @@ class PrivateDnsTileService : TileService() {
 
     override fun onClick() {
         super.onClick()
-        if (!Settings.canWrite(this)) {
-            Toast.makeText(this, "Grant WRITE_SECURE_SETTINGS using ADB; see README", Toast.LENGTH_LONG).show()
+        if (checkSelfPermission("android.permission.WRITE_SECURE_SETTINGS") != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Permission missing. Run the ADB command in README.", Toast.LENGTH_LONG).show()
             updateTile()
             return
         }
